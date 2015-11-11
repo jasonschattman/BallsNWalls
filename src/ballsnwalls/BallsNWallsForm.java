@@ -6,13 +6,13 @@ import javax.swing.*;
 
 public class BallsNWallsForm extends javax.swing.JFrame {
     
-    BallsNWalls bnw;
+    CollisionSimulator bnw;
     String mouseMode = "WALL_DRAWING";  //other choice is "BILLIARDS"
     int xCueBall, yCueBall;
     
     public BallsNWallsForm() {
         initComponents();
-        bnw = new BallsNWalls( drawingPanel );
+        bnw = new CollisionSimulator( drawingPanel );
     }
     
     @SuppressWarnings("unchecked")
@@ -369,41 +369,50 @@ public class BallsNWallsForm extends javax.swing.JFrame {
         bnw.run();
     }
     private void startTwoSidedChargeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startTwoSidedChargeButtonActionPerformed
+        mouseMode = "WALL_DRAWING";
         int numBalls = getTextFieldValue( numBallsTwoSidedText );  
         int speed = getTextFieldValue( speedTwoSidedText );
         int radius = (int) (1.5* this.drawingPanel.getWidth() / numBalls);
+        bnw.backgroundColor = Color.black;
         bnw.makeTwoSidedCharge( numBalls, radius, speed );
         animate();
     }//GEN-LAST:event_startTwoSidedChargeButtonActionPerformed
 
     private void startEpidemicButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startEpidemicButtonActionPerformed
+        mouseMode = "WALL_DRAWING";
         int numHealers = getTextFieldValue( numHealersText );
         int numHealthy = getTextFieldValue( numHealthyText );
         int numSick = getTextFieldValue( numSickText );
         int total = numHealers + numHealthy + numSick;
         int radius = this.drawingPanel.getWidth() / (1*total);
+        bnw.backgroundColor = Color.black;
         bnw.makeEpidemicSimulation(numHealers, numHealthy, numSick, 5, radius );
         animate();
     }//GEN-LAST:event_startEpidemicButtonActionPerformed
 
     private void startBilliardRackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startBilliardRackButtonActionPerformed
         this.mouseMode = "BILLIARDS";
+        
         xCueBall = drawingPanel.getWidth()/2;
         yCueBall = drawingPanel.getHeight()/3;
         
         int xRack = xCueBall;
         int yRack = 2*drawingPanel.getHeight()/3;
         
+        bnw.backgroundColor = Color.green;
         bnw.animator = null;
-        bnw.makeBilliardsRack(xCueBall, yCueBall, xRack, yRack, 1, 30, 0.99);
-        shootButton.setEnabled(true);
+        bnw.makeBilliardsTable( xCueBall, yCueBall, xRack, yRack, 1, 30, 0.99);
         bnw.drawScreen();
+        
+        shootButton.setEnabled(true);
     }//GEN-LAST:event_startBilliardRackButtonActionPerformed
 
     private void mouseClickHandler(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseClickHandler
         if (mouseMode.equals("WALL_DRAWING")) {
-            bnw.xWallStart = evt.getX();
-            bnw.yWallStart = evt.getY();
+            xCueBall = evt.getX();
+            yCueBall = evt.getY();
+            
+            //bnw.drawCueBall(xCueBall, yCueBall);
         }
         
         else if (mouseMode.equals("BILLIARDS")) {
@@ -424,7 +433,7 @@ public class BallsNWallsForm extends javax.swing.JFrame {
         bnw.lineBeingDrawn = false;
         bnw.xWallEnd = evt.getX();
         bnw.yWallEnd = evt.getY();    
-        bnw.walls.add( new Wall(bnw.xWallStart, bnw.yWallStart, bnw.xWallEnd, bnw.yWallEnd, 0, Color.white,3, Integer.toString( bnw.walls.size() ) ) );
+        bnw.walls.add( new Wall(bnw.xWallStart, bnw.yWallStart, bnw.xWallEnd, bnw.yWallEnd, 0, Color.white, 3, Integer.toString( bnw.walls.size() ) ) );
     }//GEN-LAST:event_mouseReleasedHandler
 
     private void mousePressedHandler(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mousePressedHandler
@@ -433,9 +442,11 @@ public class BallsNWallsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_mousePressedHandler
 
     private void startRandomDistributionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startRandomDistributionButtonActionPerformed
+        mouseMode = "WALL_DRAWING";
         int numBalls = getTextFieldValue( numBallsText );
         int radius = getTextFieldValue( radiusText );
         int maxSpeed = getTextFieldValue( maxSpeedText );
+        bnw.backgroundColor = Color.black;
         bnw.makeRandomDistribution( numBalls, radius, maxSpeed );
         animate();
     }//GEN-LAST:event_startRandomDistributionButtonActionPerformed
