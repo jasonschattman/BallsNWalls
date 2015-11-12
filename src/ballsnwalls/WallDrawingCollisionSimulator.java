@@ -19,7 +19,7 @@ public class WallDrawingCollisionSimulator extends CollisionSimulator {
     public WallDrawingCollisionSimulator(JPanel panel) {
         super( panel );
         lineBeingDrawn = false;
-        this.backgroundColor = Color.green;
+        this.backgroundColor = Color.black;
     }
     
      
@@ -163,14 +163,6 @@ public class WallDrawingCollisionSimulator extends CollisionSimulator {
       if (balls != null )
         for (int i = 0; i < balls.length; i++) 
            balls[i].draw(G); 
-      
-      if (vWalls != null )
-        for (int i = 0; i < vWalls.length; i++)
-           vWalls[i].draw(G);
-      
-      if (hWalls != null )
-        for (int i = 0; i < hWalls.length; i++) 
-           hWalls[i].draw(G);  
       
       if (walls != null )
         for (int i = 0; i < walls.size(); i++) 

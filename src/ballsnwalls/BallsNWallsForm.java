@@ -6,13 +6,13 @@ import javax.swing.*;
 
 public class BallsNWallsForm extends javax.swing.JFrame {
     
-    CollisionSimulator bnw;
+    WallDrawingCollisionSimulator wdcs;
+    BilliardsSimulator bs;
     String mouseMode = "WALL_DRAWING";  //other choice is "BILLIARDS"
-    int xCueBall, yCueBall;
+    
     
     public BallsNWallsForm() {
-        initComponents();
-        bnw = new CollisionSimulator( drawingPanel );
+        initComponents(); 
     }
     
     @SuppressWarnings("unchecked")
@@ -251,12 +251,12 @@ public class BallsNWallsForm extends javax.swing.JFrame {
                 .addComponent(startBilliardRackButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(shootButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(187, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(0, 77, Short.MAX_VALUE)
+                .addGap(0, 9, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(startBilliardRackButton)
                     .addComponent(shootButton)))
@@ -362,93 +362,105 @@ public class BallsNWallsForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void animate( ) {
-        bnw.setWalls( this.drawingPanel );
-        bnw.animator = new Thread( bnw );  //Allows the animation while-loop in the run() method to continue.  Setting animator to null makes the animation loop stop.
-        bnw.animator.start();
-        bnw.run();
+    public void animate( CollisionSimulator cs ) {
+        cs.setWalls( this.drawingPanel );
+        cs.animator = new Thread( cs );  //Allows the animation while-loop in the run() method to continue.  Setting animator to null makes the animation loop stop.
+        cs.animator.start();
+        cs.run();
     }
+    
     private void startTwoSidedChargeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startTwoSidedChargeButtonActionPerformed
+        wdcs = new WallDrawingCollisionSimulator( drawingPanel );
         mouseMode = "WALL_DRAWING";
+        
         int numBalls = getTextFieldValue( numBallsTwoSidedText );  
         int speed = getTextFieldValue( speedTwoSidedText );
         int radius = (int) (1.5* this.drawingPanel.getWidth() / numBalls);
-        bnw.backgroundColor = Color.black;
-        bnw.makeTwoSidedCharge( numBalls, radius, speed );
-        animate();
+        
+        wdcs.makeTwoSidedCharge( numBalls, radius, speed );
+        animate( wdcs );
     }//GEN-LAST:event_startTwoSidedChargeButtonActionPerformed
 
     private void startEpidemicButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startEpidemicButtonActionPerformed
+        wdcs = new WallDrawingCollisionSimulator( drawingPanel );
         mouseMode = "WALL_DRAWING";
+        
         int numHealers = getTextFieldValue( numHealersText );
         int numHealthy = getTextFieldValue( numHealthyText );
         int numSick = getTextFieldValue( numSickText );
         int total = numHealers + numHealthy + numSick;
         int radius = this.drawingPanel.getWidth() / (1*total);
-        bnw.backgroundColor = Color.black;
-        bnw.makeEpidemicSimulation(numHealers, numHealthy, numSick, 5, radius );
-        animate();
+        
+        wdcs.makeEpidemicSimulation(numHealers, numHealthy, numSick, 5, radius );
+        animate(wdcs);
     }//GEN-LAST:event_startEpidemicButtonActionPerformed
 
     private void startBilliardRackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startBilliardRackButtonActionPerformed
+        bs = new BilliardsSimulator( drawingPanel );
+        
         this.mouseMode = "BILLIARDS";
         
-        xCueBall = drawingPanel.getWidth()/2;
-        yCueBall = drawingPanel.getHeight()/3;
-        
-        int xRack = xCueBall;
+        bs.xCueBall = drawingPanel.getWidth()/2;
+        bs.yCueBall = drawingPanel.getHeight()/3;
+        int xRack = bs.xCueBall;
         int yRack = 2*drawingPanel.getHeight()/3;
         
-        bnw.backgroundColor = Color.green;
-        bnw.animator = null;
-        bnw.makeBilliardsTable( xCueBall, yCueBall, xRack, yRack, 1, 30, 0.99);
-        bnw.drawScreen();
+        bs.animator = null;
+        bs.makeBilliardBalls( bs.xCueBall, bs.yCueBall, xRack, yRack, 1, 30, 0.99 );
+        bs.drawScreen();
         
         shootButton.setEnabled(true);
     }//GEN-LAST:event_startBilliardRackButtonActionPerformed
 
     private void mouseClickHandler(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseClickHandler
         if (mouseMode.equals("WALL_DRAWING")) {
-            xCueBall = evt.getX();
-            yCueBall = evt.getY();
-            
-            //bnw.drawCueBall(xCueBall, yCueBall);
+            bs.xCueBall = evt.getX();
+            bs.yCueBall = evt.getY();
+        
         }
         
         else if (mouseMode.equals("BILLIARDS")) {
-            bnw.xWallStart = evt.getX();
-            bnw.yWallStart = evt.getY();
+            wdcs.xWallStart = evt.getX();
+            wdcs.yWallStart = evt.getY();
         }
-        
-        
     }//GEN-LAST:event_mouseClickHandler
 
     private void mouseDraggedHandler(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseDraggedHandler
-        bnw.xWallEnd = evt.getX();
-        bnw.yWallEnd = evt.getY();
-        bnw.lineBeingDrawn = true; 
+        if (mouseMode.equals("BILLIARDS")) {
+            bs.xCueBall = evt.getX();
+            bs.yCueBall = evt.getY();     
+        }
+        
+        else if (mouseMode.equals("WALL_DRAWING")) {
+            wdcs.xWallEnd = evt.getX();
+            wdcs.yWallEnd = evt.getY();
+            wdcs.lineBeingDrawn = true; 
+        }
     }//GEN-LAST:event_mouseDraggedHandler
 
     private void mouseReleasedHandler(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseReleasedHandler
-        bnw.lineBeingDrawn = false;
-        bnw.xWallEnd = evt.getX();
-        bnw.yWallEnd = evt.getY();    
-        bnw.walls.add( new Wall(bnw.xWallStart, bnw.yWallStart, bnw.xWallEnd, bnw.yWallEnd, 0, Color.white, 3, Integer.toString( bnw.walls.size() ) ) );
+        wdcs.lineBeingDrawn = false;
+        wdcs.xWallEnd = evt.getX();
+        wdcs.yWallEnd = evt.getY();    
+        wdcs.walls.add( new Wall(wdcs.xWallStart, wdcs.yWallStart, wdcs.xWallEnd, wdcs.yWallEnd, 0, Color.white, 3, Integer.toString( wdcs.walls.size() ) ) );
     }//GEN-LAST:event_mouseReleasedHandler
 
     private void mousePressedHandler(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mousePressedHandler
-        bnw.xWallStart = evt.getX();
-        bnw.yWallStart = evt.getY();
+        wdcs.xWallStart = evt.getX();
+        wdcs.yWallStart = evt.getY();
     }//GEN-LAST:event_mousePressedHandler
 
     private void startRandomDistributionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startRandomDistributionButtonActionPerformed
+        wdcs = new WallDrawingCollisionSimulator( drawingPanel );
         mouseMode = "WALL_DRAWING";
+        
         int numBalls = getTextFieldValue( numBallsText );
         int radius = getTextFieldValue( radiusText );
         int maxSpeed = getTextFieldValue( maxSpeedText );
-        bnw.backgroundColor = Color.black;
-        bnw.makeRandomDistribution( numBalls, radius, maxSpeed );
-        animate();
+        
+        wdcs.backgroundColor = Color.black;
+        wdcs.makeRandomDistribution( numBalls, radius, maxSpeed );
+        animate(wdcs);
     }//GEN-LAST:event_startRandomDistributionButtonActionPerformed
 
     private void numBallsTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numBallsTextActionPerformed
@@ -456,7 +468,7 @@ public class BallsNWallsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_numBallsTextActionPerformed
 
     private void shootButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shootButtonActionPerformed
-        animate();
+        animate( bs );
         shootButton.setEnabled(false);
     }//GEN-LAST:event_shootButtonActionPerformed
 

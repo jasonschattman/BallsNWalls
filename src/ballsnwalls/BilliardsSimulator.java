@@ -5,13 +5,15 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 public class BilliardsSimulator extends CollisionSimulator {
-
+    
+    int xCueBall, yCueBall;
+    
     static Color[] colors = {Color.LIGHT_GRAY, Color.BLUE, Color.CYAN, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.RED,
         Color.YELLOW, Color.BLACK, new Color(0, 128, 200), Color.darkGray, new Color(200, 128, 0),
         Color.ORANGE, new Color(60, 128, 30), new Color(200, 10, 200)};
 
     public BilliardsSimulator(JPanel panel) {
-        super(panel);
+        super( panel );
         this.backgroundColor = Color.green;
     }
 
@@ -52,10 +54,10 @@ public class BilliardsSimulator extends CollisionSimulator {
         int leftOverHorizontalDistance = w - tableWidth;
         int x1 = leftOverHorizontalDistance/2, x2 = x1 + tableWidth;
 
-        walls.add(new Wall(0, 0, w, 0, 0, Color.white, 3, "NORTH"));
-        walls.add(new Wall(0, h, w, h, 0, Color.white, 3, "SOUTH"));
-        walls.add(new Wall(x1, 0, x1, h, 0, Color.white, 3, "WEST"));
-        walls.add(new Wall(x2, 0, x2, h, 0, Color.white, 3, "EAST "));
+        walls.add(new Wall( 0, 0, w, 0, 0, Color.white, 3, "NORTH"));
+        walls.add(new Wall( 0, h, w, h, 0, Color.white, 3, "SOUTH"));
+        walls.add(new Wall( x1, 0, x1, h, 0, Color.white, 3, "WEST"));
+        walls.add(new Wall( x2, 0, x2, h, 0, Color.white, 3, "EAST "));
     }
 
 }

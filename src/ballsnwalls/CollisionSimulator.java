@@ -10,8 +10,6 @@ public class CollisionSimulator implements Runnable  {
 
  Ball[] balls;
  ArrayList<Wall> walls;
- VerticalWall[] vWalls;
- HorizontalWall[] hWalls;
  
  int radius;
  double maxSpeed;
@@ -41,9 +39,9 @@ public class CollisionSimulator implements Runnable  {
 }
  
 private Image createImage() {
-      BufferedImage bufferedImage = new BufferedImage(p.getWidth(), p.getHeight(), BufferedImage.TYPE_INT_RGB);
+      BufferedImage bi = new BufferedImage(p.getWidth(), p.getHeight(), BufferedImage.TYPE_INT_RGB);
 
-      Graphics2D G = (Graphics2D) bufferedImage.getGraphics();
+      Graphics2D G = (Graphics2D) bi.getGraphics();
       
       G.setColor( this.backgroundColor );
       G.fillRect(0, 0, p.getWidth(), p.getHeight());
@@ -56,7 +54,7 @@ private Image createImage() {
         for (int i = 0; i < walls.size(); i++) 
            walls.get(i).draw(G); 
       
-      return bufferedImage;
+      return bi;
    }
 
  
@@ -116,20 +114,20 @@ private Image createImage() {
  
  public void run() {
                
-        while( Thread.currentThread() == animator ) {
+        while( Thread.currentThread() == animator ) { //FOR EACH FRAME...
                         
            for (int i = 0; i < balls.length; i++) { //FOR EACH Ball i...
                 
-                balls[i].checkForWallCollisions2(walls );
+                balls[i].checkForWallCollisions2( walls );
                               
-                if ( collisionsOn) {
+                if ( collisionsOn ) {
                 
                     for (int j = i+1; j < balls.length; j++)   //CHECK FOR COLLISIONS BETWEEN i AND EACH BALL FROM i+1 TO THE END
                         
                         if ( balls[i].hasCollidedWith( balls[j] ) ) {                            
                             balls[i].adjustVelocityAfterCollisionWith( balls[j] );                             
-                            balls[i].checkForWallCollisions(walls );
-                            balls[j].checkForWallCollisions(walls );                         
+                            balls[i].checkForWallCollisions( walls );
+                            balls[j].checkForWallCollisions( walls );                         
                         }
                 }                 
                
