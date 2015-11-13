@@ -13,6 +13,8 @@ public class BallsNWallsForm extends javax.swing.JFrame {
     
     public BallsNWallsForm() {
         initComponents(); 
+        wdcs = new WallDrawingCollisionSimulator( drawingPanel );
+        bs = new BilliardsSimulator( drawingPanel);
     }
     
     @SuppressWarnings("unchecked")
@@ -86,7 +88,7 @@ public class BallsNWallsForm extends javax.swing.JFrame {
             .addGap(0, 700, Short.MAX_VALUE)
         );
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Random Distribution", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 0, 255)));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Random Distribution", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 13), new java.awt.Color(0, 0, 255))); // NOI18N
 
         startRandomDistributionButton.setText("Start");
         startRandomDistributionButton.addActionListener(new java.awt.event.ActionListener() {
@@ -126,13 +128,13 @@ public class BallsNWallsForm extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(radiusText, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(radiusText, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(maxSpeedText, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(maxSpeedText, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(startRandomDistributionButton))
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,7 +151,7 @@ public class BallsNWallsForm extends javax.swing.JFrame {
                 .addComponent(startRandomDistributionButton))
         );
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Custom Distribution", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 0, 255)));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Custom Distribution", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 13), new java.awt.Color(0, 0, 255))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -162,7 +164,7 @@ public class BallsNWallsForm extends javax.swing.JFrame {
             .addGap(0, 59, Short.MAX_VALUE)
         );
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Epidemic Simulator", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 0, 255)));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Epidemic Simulator", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 13), new java.awt.Color(0, 0, 255))); // NOI18N
 
         startEpidemicButton.setText("Start");
         startEpidemicButton.addActionListener(new java.awt.event.ActionListener() {
@@ -193,18 +195,17 @@ public class BallsNWallsForm extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(numSickText, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(numSickText, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(numHealersText))
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(numHealthyText, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(startEpidemicButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(numHealthyText, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(startEpidemicButton)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(numHealersText, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(271, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,7 +226,7 @@ public class BallsNWallsForm extends javax.swing.JFrame {
                 .addComponent(startEpidemicButton))
         );
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Billiards Rack", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 0, 255)));
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Billiards Rack", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 13), new java.awt.Color(0, 0, 255))); // NOI18N
 
         startBilliardRackButton.setText("Set Up Rack");
         startBilliardRackButton.addActionListener(new java.awt.event.ActionListener() {
@@ -251,7 +252,7 @@ public class BallsNWallsForm extends javax.swing.JFrame {
                 .addComponent(startBilliardRackButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(shootButton)
-                .addContainerGap(187, Short.MAX_VALUE))
+                .addContainerGap(235, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -262,7 +263,7 @@ public class BallsNWallsForm extends javax.swing.JFrame {
                     .addComponent(shootButton)))
         );
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Two Sided Charge", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 0, 255)));
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Two Sided Charge", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 13), new java.awt.Color(0, 0, 255))); // NOI18N
 
         startTwoSidedChargeButton.setText("Start");
         startTwoSidedChargeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -275,7 +276,7 @@ public class BallsNWallsForm extends javax.swing.JFrame {
 
         jLabel8.setText("Speed");
 
-        numBallsTwoSidedText.setText("100");
+        numBallsTwoSidedText.setText("200");
 
         speedTwoSidedText.setText("3");
 
@@ -292,20 +293,20 @@ public class BallsNWallsForm extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(startTwoSidedChargeButton)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(numBallsTwoSidedText, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(numBallsTwoSidedText, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(speedTwoSidedText)
-                                .addGap(24, 24, 24)))
+                                .addComponent(speedTwoSidedText, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jRadioButton2)
                             .addComponent(jRadioButton1))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(197, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -338,7 +339,7 @@ public class BallsNWallsForm extends javax.swing.JFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -364,13 +365,13 @@ public class BallsNWallsForm extends javax.swing.JFrame {
 
     public void animate( CollisionSimulator cs ) {
         cs.setWalls( this.drawingPanel );
-        cs.animator = new Thread( cs );  //Allows the animation while-loop in the run() method to continue.  Setting animator to null makes the animation loop stop.
+        cs.animator = new Thread( cs );
         cs.animator.start();
         cs.run();
     }
     
     private void startTwoSidedChargeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startTwoSidedChargeButtonActionPerformed
-        wdcs = new WallDrawingCollisionSimulator( drawingPanel );
+        
         mouseMode = "WALL_DRAWING";
         
         int numBalls = getTextFieldValue( numBallsTwoSidedText );  
@@ -378,11 +379,12 @@ public class BallsNWallsForm extends javax.swing.JFrame {
         int radius = (int) (1.5* this.drawingPanel.getWidth() / numBalls);
         
         wdcs.makeTwoSidedCharge( numBalls, radius, speed );
+        
+        bs.animator = null;
         animate( wdcs );
     }//GEN-LAST:event_startTwoSidedChargeButtonActionPerformed
 
     private void startEpidemicButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startEpidemicButtonActionPerformed
-        wdcs = new WallDrawingCollisionSimulator( drawingPanel );
         mouseMode = "WALL_DRAWING";
         
         int numHealers = getTextFieldValue( numHealersText );
@@ -392,11 +394,13 @@ public class BallsNWallsForm extends javax.swing.JFrame {
         int radius = this.drawingPanel.getWidth() / (1*total);
         
         wdcs.makeEpidemicSimulation(numHealers, numHealthy, numSick, 5, radius );
+        
+        bs.animator = null;
         animate(wdcs);
     }//GEN-LAST:event_startEpidemicButtonActionPerformed
 
     private void startBilliardRackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startBilliardRackButtonActionPerformed
-        bs = new BilliardsSimulator( drawingPanel );
+       
         
         this.mouseMode = "BILLIARDS";
         
@@ -406,6 +410,7 @@ public class BallsNWallsForm extends javax.swing.JFrame {
         int yRack = 2*drawingPanel.getHeight()/3;
         
         bs.animator = null;
+        wdcs.animator = null;
         bs.makeBilliardBalls( bs.xCueBall, bs.yCueBall, xRack, yRack, 1, 30, 0.99 );
         bs.drawScreen();
         
@@ -413,13 +418,12 @@ public class BallsNWallsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_startBilliardRackButtonActionPerformed
 
     private void mouseClickHandler(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseClickHandler
-        if (mouseMode.equals("WALL_DRAWING")) {
+        if (mouseMode.equals("BILLIARDS")) {
             bs.xCueBall = evt.getX();
-            bs.yCueBall = evt.getY();
-        
+            bs.yCueBall = evt.getY();       
         }
         
-        else if (mouseMode.equals("BILLIARDS")) {
+        else if (mouseMode.equals("WALL_DRAWING")) {
             wdcs.xWallStart = evt.getX();
             wdcs.yWallStart = evt.getY();
         }
@@ -432,9 +436,11 @@ public class BallsNWallsForm extends javax.swing.JFrame {
         }
         
         else if (mouseMode.equals("WALL_DRAWING")) {
+            //System.out.println("a");
+            wdcs.lineBeingDrawn = true; 
             wdcs.xWallEnd = evt.getX();
             wdcs.yWallEnd = evt.getY();
-            wdcs.lineBeingDrawn = true; 
+            
         }
     }//GEN-LAST:event_mouseDraggedHandler
 
@@ -446,20 +452,28 @@ public class BallsNWallsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_mouseReleasedHandler
 
     private void mousePressedHandler(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mousePressedHandler
-        wdcs.xWallStart = evt.getX();
-        wdcs.yWallStart = evt.getY();
+        if (mouseMode.equals("BILLIARDS")) {
+            bs.xCueBall = evt.getX();
+            bs.yCueBall = evt.getY();       
+        }
+        
+        else if (mouseMode.equals("WALL_DRAWING")) {
+            wdcs.xWallStart = evt.getX();
+            wdcs.yWallStart = evt.getY();
+        }
     }//GEN-LAST:event_mousePressedHandler
 
     private void startRandomDistributionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startRandomDistributionButtonActionPerformed
-        wdcs = new WallDrawingCollisionSimulator( drawingPanel );
+        
         mouseMode = "WALL_DRAWING";
         
         int numBalls = getTextFieldValue( numBallsText );
         int radius = getTextFieldValue( radiusText );
         int maxSpeed = getTextFieldValue( maxSpeedText );
         
-        wdcs.backgroundColor = Color.black;
         wdcs.makeRandomDistribution( numBalls, radius, maxSpeed );
+        
+        bs.animator = null;
         animate(wdcs);
     }//GEN-LAST:event_startRandomDistributionButtonActionPerformed
 
