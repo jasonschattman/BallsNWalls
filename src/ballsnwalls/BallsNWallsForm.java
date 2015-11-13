@@ -400,8 +400,6 @@ public class BallsNWallsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_startEpidemicButtonActionPerformed
 
     private void startBilliardRackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startBilliardRackButtonActionPerformed
-       
-        
         this.mouseMode = "BILLIARDS";
         
         bs.xCueBall = drawingPanel.getWidth()/2;
@@ -411,7 +409,8 @@ public class BallsNWallsForm extends javax.swing.JFrame {
         
         bs.animator = null;
         wdcs.animator = null;
-        bs.makeBilliardBalls( bs.xCueBall, bs.yCueBall, xRack, yRack, 1, 30, 0.99 );
+        
+        bs.makeBilliardBalls( bs.xCueBall, bs.yCueBall, xRack, yRack, 1, 30 );
         bs.drawScreen();
         
         shootButton.setEnabled(true);
@@ -419,8 +418,11 @@ public class BallsNWallsForm extends javax.swing.JFrame {
 
     private void mouseClickHandler(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseClickHandler
         if (mouseMode.equals("BILLIARDS")) {
-            bs.xCueBall = evt.getX();
-            bs.yCueBall = evt.getY();       
+            
+            if( bs.status == BilliardsSimulator.PLACING_CUEBALL ) {
+                bs.xCueBall = evt.getX();
+                bs.yCueBall = evt.getY(); 
+            }
         }
         
         else if (mouseMode.equals("WALL_DRAWING")) {
@@ -431,12 +433,23 @@ public class BallsNWallsForm extends javax.swing.JFrame {
 
     private void mouseDraggedHandler(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseDraggedHandler
         if (mouseMode.equals("BILLIARDS")) {
-            bs.xCueBall = evt.getX();
-            bs.yCueBall = evt.getY();     
-        }
+            if( bs.status == BilliardsSimulator.PLACING_CUEBALL ) {
+
+                bs.xCueBall = evt.getX();
+                bs.yCueBall = evt.getY();
+                Ball cueBall = bs.balls[0];
+                cueBall.setPosition(bs.xCueBall, bs.yCueBall);
+                bs.drawScreen();
+     
+            }
+            
+            if( bs.status == BilliardsSimulator.AIMING_CUEBALL ) {
+                }
+            }
+                
+        
         
         else if (mouseMode.equals("WALL_DRAWING")) {
-            //System.out.println("a");
             wdcs.lineBeingDrawn = true; 
             wdcs.xWallEnd = evt.getX();
             wdcs.yWallEnd = evt.getY();

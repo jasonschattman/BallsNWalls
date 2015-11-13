@@ -32,7 +32,7 @@ public class CollisionSimulator implements Runnable  {
      return (int) (min + r.nextDouble()*(max-min));
  }
  
- public void drawScreen() {
+public void drawScreen() {
       Image img = createImage();
       Graphics g = p.getGraphics();
       g.drawImage(img, 0, 0, p);

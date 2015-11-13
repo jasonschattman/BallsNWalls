@@ -3,6 +3,7 @@ package ballsnwalls;
 
 import static ballsnwalls.CollisionSimulator.randDouble;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -150,7 +151,13 @@ public class WallDrawingCollisionSimulator extends CollisionSimulator {
          balls[i] = new Ball(randX, randY, radius, 0, 0, Color.blue, speedLossRate );          
      }
  }
-    
+ 
+ public void drawScreen() {
+      Image img = createImage();
+      Graphics g = p.getGraphics();
+      g.drawImage(img, 0, 0, p);
+}
+ 
  private Image createImage() {
       BufferedImage bi = new BufferedImage(p.getWidth(), p.getHeight(), BufferedImage.TYPE_INT_RGB);
 
@@ -168,18 +175,10 @@ public class WallDrawingCollisionSimulator extends CollisionSimulator {
            walls.get(i).draw(G);   
           
       if( lineBeingDrawn ) {
-          System.out.println("a");
-          G.setColor(Color.blue);
-          G.fillRect(0, 0, 50, 50);
+          G.setColor(Color.yellow);
           G.drawLine(xWallStart, yWallStart, xWallEnd, yWallEnd);
-      }
-      
-      else {
-          G.setColor(Color.red);
-          G.fillRect(0, 0, 50, 50);
       }
           
       return bi;
    }
-
 }
