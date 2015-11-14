@@ -6,18 +6,18 @@ import javax.swing.*;
 
 public class BallsNWallsForm extends javax.swing.JFrame {
     
+    static final int WALL_DRAWING_MODE = 1, BILLIARDS_MODE = 2;
     WallDrawingCollisionSimulator wdcs;
     BilliardsSimulator bs;
-    String mouseMode = "WALL_DRAWING";  //other choice is "BILLIARDS"
+    int simulatorMode;  //other choice is "BILLIARDS"
     
     
     public BallsNWallsForm() {
         initComponents(); 
         wdcs = new WallDrawingCollisionSimulator( drawingPanel );
-        bs = new BilliardsSimulator( drawingPanel);
+        bs = new BilliardsSimulator( this );
     }
     
-    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -372,7 +372,7 @@ public class BallsNWallsForm extends javax.swing.JFrame {
     
     private void startTwoSidedChargeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startTwoSidedChargeButtonActionPerformed
         
-        mouseMode = "WALL_DRAWING";
+        simulatorMode = WALL_DRAWING_MODE;
         
         int numBalls = getTextFieldValue( numBallsTwoSidedText );  
         int speed = getTextFieldValue( speedTwoSidedText );
@@ -385,7 +385,7 @@ public class BallsNWallsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_startTwoSidedChargeButtonActionPerformed
 
     private void startEpidemicButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startEpidemicButtonActionPerformed
-        mouseMode = "WALL_DRAWING";
+        simulatorMode = WALL_DRAWING_MODE;
         
         int numHealers = getTextFieldValue( numHealersText );
         int numHealthy = getTextFieldValue( numHealthyText );
@@ -400,40 +400,36 @@ public class BallsNWallsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_startEpidemicButtonActionPerformed
 
     private void startBilliardRackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startBilliardRackButtonActionPerformed
-        this.mouseMode = "BILLIARDS";
-        
-        bs.xCueBall = drawingPanel.getWidth()/2;
-        bs.yCueBall = drawingPanel.getHeight()/3;
-        int xRack = bs.xCueBall;
-        int yRack = 2*drawingPanel.getHeight()/3;
-        
+        simulatorMode = BILLIARDS_MODE;
+               
         bs.animator = null;
         wdcs.animator = null;
         
-        bs.makeBilliardBalls( bs.xCueBall, bs.yCueBall, xRack, yRack, 1, 30 );
+        bs.makeBilliardBalls();
         bs.drawScreen();
         
         shootButton.setEnabled(true);
     }//GEN-LAST:event_startBilliardRackButtonActionPerformed
 
     private void mouseClickHandler(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseClickHandler
-        if (mouseMode.equals("BILLIARDS")) {
+        if (simulatorMode == BILLIARDS_MODE) {
             
-            if( bs.status == BilliardsSimulator.PLACING_CUEBALL ) {
+            if( bs.mode == bs.PLACING_CUEBALL ) {
                 bs.xCueBall = evt.getX();
                 bs.yCueBall = evt.getY(); 
+                bs.drawScreen();
             }
         }
         
-        else if (mouseMode.equals("WALL_DRAWING")) {
+        else if (simulatorMode == WALL_DRAWING_MODE) {
             wdcs.xWallStart = evt.getX();
             wdcs.yWallStart = evt.getY();
         }
     }//GEN-LAST:event_mouseClickHandler
 
     private void mouseDraggedHandler(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseDraggedHandler
-        if (mouseMode.equals("BILLIARDS")) {
-            if( bs.status == BilliardsSimulator.PLACING_CUEBALL ) {
+        if (simulatorMode == BILLIARDS_MODE) {
+            if( bs.mode == bs.PLACING_CUEBALL ) {
 
                 bs.xCueBall = evt.getX();
                 bs.yCueBall = evt.getY();
@@ -443,13 +439,14 @@ public class BallsNWallsForm extends javax.swing.JFrame {
      
             }
             
-            if( bs.status == BilliardsSimulator.AIMING_CUEBALL ) {
-                }
+            if( bs.mode == bs.AIMING_CUEBALL ) {
+                bs.xAim = evt.getX();
+                bs.yAim = evt.getY();
+                bs.drawScreen();
             }
-                
-        
-        
-        else if (mouseMode.equals("WALL_DRAWING")) {
+        }
+           
+        else if (simulatorMode == WALL_DRAWING_MODE) {
             wdcs.lineBeingDrawn = true; 
             wdcs.xWallEnd = evt.getX();
             wdcs.yWallEnd = evt.getY();
@@ -458,27 +455,35 @@ public class BallsNWallsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_mouseDraggedHandler
 
     private void mouseReleasedHandler(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseReleasedHandler
-        wdcs.lineBeingDrawn = false;
-        wdcs.xWallEnd = evt.getX();
-        wdcs.yWallEnd = evt.getY();    
-        wdcs.walls.add( new Wall(wdcs.xWallStart, wdcs.yWallStart, wdcs.xWallEnd, wdcs.yWallEnd, 0, Color.white, 3, Integer.toString( wdcs.walls.size() ) ) );
+        if (simulatorMode == BILLIARDS_MODE) {
+        
+            wdcs.lineBeingDrawn = false;
+            wdcs.xWallEnd = evt.getX();
+            wdcs.yWallEnd = evt.getY();    
+            wdcs.walls.add( new Wall(wdcs.xWallStart, wdcs.yWallStart, wdcs.xWallEnd, wdcs.yWallEnd, 0, Color.white, 3, Integer.toString(wdcs.walls.size())));
+         }
     }//GEN-LAST:event_mouseReleasedHandler
 
     private void mousePressedHandler(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mousePressedHandler
-        if (mouseMode.equals("BILLIARDS")) {
-            bs.xCueBall = evt.getX();
-            bs.yCueBall = evt.getY();       
+        if (simulatorMode == BILLIARDS_MODE) {
+            
+            if( bs.mode == bs.PLACING_CUEBALL ) {
+                bs.xCueBall = evt.getX();
+                bs.yCueBall = evt.getY(); 
+                bs.drawScreen();
+            }
         }
         
-        else if (mouseMode.equals("WALL_DRAWING")) {
+        else if (simulatorMode == WALL_DRAWING_MODE) {
             wdcs.xWallStart = evt.getX();
             wdcs.yWallStart = evt.getY();
-        }
+        } wdcs.yWallStart = evt.getY();
+        
     }//GEN-LAST:event_mousePressedHandler
 
     private void startRandomDistributionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startRandomDistributionButtonActionPerformed
         
-        mouseMode = "WALL_DRAWING";
+        simulatorMode = WALL_DRAWING_MODE;
         
         int numBalls = getTextFieldValue( numBallsText );
         int radius = getTextFieldValue( radiusText );
@@ -545,7 +550,7 @@ public class BallsNWallsForm extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup3;
     private javax.swing.ButtonGroup buttonGroup4;
     private javax.swing.ButtonGroup buttonGroup5;
-    private javax.swing.JPanel drawingPanel;
+    public javax.swing.JPanel drawingPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -568,7 +573,7 @@ public class BallsNWallsForm extends javax.swing.JFrame {
     private javax.swing.JTextField numHealthyText;
     private javax.swing.JTextField numSickText;
     private javax.swing.JTextField radiusText;
-    private javax.swing.JButton shootButton;
+    public javax.swing.JButton shootButton;
     private javax.swing.JTextField speedTwoSidedText;
     private javax.swing.JButton startBilliardRackButton;
     private javax.swing.JButton startEpidemicButton;

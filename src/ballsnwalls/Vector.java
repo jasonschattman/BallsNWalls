@@ -43,6 +43,10 @@ public class Vector {
         return new Vector( this.xComponent * s, this.yComponent * s);        
     }
     
+    public Vector getUnitVector() {
+        return this.scalarMultiply( 1/ this.magnitude );
+    }
+    
     public double dotProduct( Vector v2 ) {
         return this.xComponent * v2.xComponent + this.yComponent * v2.yComponent;
     }

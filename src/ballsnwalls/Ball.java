@@ -65,6 +65,10 @@ public class Ball {
         double newYspeed = this.speedLossRate * this.velocity.yComponent;
         this.setVelocity(newXspeed, newYspeed);
     }
+    
+    public double getKineticEnergy( ){
+        return Math.pow( this.velocity.magnitude, 2);
+    }
 
     //RETURNS THE DISTANCE BETWEEN TWO POINTS
     public static double getDistance(double x1, double y1, double x2, double y2) {
@@ -144,7 +148,7 @@ public class Ball {
             return 0;
 
         else if (Math.signum(vDotN) * Math.signum(lineFunction) == -1) { //IF THE BALL IS MOVING TOWARDS THE WALL
-            return (Math.abs(lineFunction) - radius * w.magnitudeOfNormal) / Math.abs(vDotN);
+            return (Math.abs(lineFunction) - radius * w.magnitudeOfNormal) / Math.abs( vDotN );
         }
          
         else 
@@ -300,11 +304,10 @@ public class Ball {
                 this.justHitWall = false;
             }
         }
-
     }
 
     
-    public void reflectOffWall(Wall w) {
+    public void reflectOffWall( Wall w ) {
 
         //IF THE BALL IS MOVING TOWARDS THE WALL
         if (this.velocity.dotProduct(w.velocity) <= 0 && this.velocity.magnitude > 0) {
@@ -374,25 +377,25 @@ public class Ball {
 
     //USED WHENEVER THE VELOCITY NEEDS TO BE CHANGED
     public void setVelocity(double xSpeed, double ySpeed) {
-        this.velocity.setComponents(xSpeed, ySpeed);
+        this.velocity.setComponents( xSpeed, ySpeed );
     }
 
     //USED WHEN BOUNCING OFF A HORIZONTAL WALL
     public void reverseYDirection() {
-        this.setVelocity(this.velocity.xComponent, -this.velocity.yComponent);
+        this.setVelocity( this.velocity.xComponent, -this.velocity.yComponent );
     }
 
     //USED WHEN BOUNCING OFF A VERTICAL WALL
     public void reverseXDirection() {
-        this.setVelocity(-this.velocity.xComponent, this.velocity.yComponent);
+        this.setVelocity( -this.velocity.xComponent, this.velocity.yComponent );
     }
 
     public void reverseDirection() {
-        this.setVelocity(-this.velocity.xComponent, -this.velocity.yComponent);
+        this.setVelocity( -this.velocity.xComponent, -this.velocity.yComponent );
     }
 
     //DRAWS THE BALL CENTERED AT ITS CURRENT LOCATION 
-    public void draw(Graphics2D g) {
+    public void draw( Graphics2D g ) {
         g.setColor(this.color);
         g.fillOval((int) (this.xPos - this.radius), (int) (this.yPos - this.radius), (int) this.diameter, (int) this.diameter);
     }
