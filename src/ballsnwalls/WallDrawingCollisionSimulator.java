@@ -28,12 +28,15 @@ public class WallDrawingCollisionSimulator extends CollisionSimulator {
  public void makeRandomDistribution(int numBalls, double radius, double maxSpeed ) {
      balls = new Ball[numBalls];
      
+     double max = Math.min(maxSpeed, 20);
+     double r = Math.min(radius, p.getWidth()/(2*numBalls));
+     
      for (int i = 0; i < balls.length; i++) {
          
          double randX = randDouble(200,600);
          double randY = randDouble(200,600);
-         double xSpeed = randDouble(-maxSpeed, maxSpeed);
-         double ySpeed = randDouble(-maxSpeed, maxSpeed);
+         double xSpeed = randDouble(-max, max);
+         double ySpeed = randDouble(-max, max);
          
          balls[i] = new Ball(randX, randY, radius, xSpeed, ySpeed, Color.blue, 1);       
      }
@@ -78,7 +81,7 @@ public class WallDrawingCollisionSimulator extends CollisionSimulator {
       }
  }
  
- public void makeTwoSidedCharge(int numBalls, double radius, double speed ) {
+ public void makeTwoSidedCharge(int numBalls, int radius, double speed ) {
      
      balls = new Ball[numBalls];
      
@@ -88,13 +91,13 @@ public class WallDrawingCollisionSimulator extends CollisionSimulator {
      
      for (int i = 0; i < balls.length/2; i++) {
          double x = randDouble( 10, .2*w );
-         double y = randDouble( .2*h, .8*h );
+         double y = randDouble( .15*h, .7*h );
          balls[i] = new Ball(x, y, radius, speed, 0, Color.yellow, 1);
      } 
      
      for (int i = balls.length/2; i < balls.length; i++) {
          double x = randDouble( .8*w, w - 10 );
-         double y = randDouble( .2*h, .8*h );
+         double y = randDouble( .2*h, .75*h );
         
          balls[i] = new Ball(x, y, radius, -speed, 0, Color.red, 1);                   
    }

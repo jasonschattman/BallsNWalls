@@ -1,5 +1,6 @@
 package ballsnwalls;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -16,11 +17,14 @@ public class BilliardsSimulator extends CollisionSimulator {
     
     int xCueBall, yCueBall;
     int xRack, yRack; //the apex of the triangular rack at the start
-    int xAim, yAim; 
-    Vector velocityCueBall;
-    double initialKineticEnergy;
+    int xAim, yAim, xAimEnd, yAimEnd; 
+    Vector velocityCueBall, lineOfSightVector;
+    double initialKineticEnergy; //initial energy imparted to the cueball when the user shoots
     
     int x1, x2, x3, w, h, b; //used to calculate the dimensions of the table
+    int pr; //pocket radius
+    int pd; //pocket diameter
+    int pl; //pocket length (used for the side pockets, which are drawn as ovals rather than perfect circles)
     
     Color tableBorder = new Color( 87, 45, 9 ); //brown
     Color tableSurface = Color.green;
@@ -38,32 +42,43 @@ public class BilliardsSimulator extends CollisionSimulator {
         this.form = bnwf;
         this.backgroundColor = Color.black;
         
-        b = 24;
+        reset();
+    }
+    
+    public void reset() {
+        b = 24; //the width of the brown table border
+        pr = (int) (1.5*b);
+        pd = 2*pr;
+        pl = pr/2;
         h = p.getHeight();
         w = p.getWidth();
         
-        x1 = w/2 - (h+2*b)/4;
-        x2 = x1 + b;
-        x3 = w/2 + (h-2*b)/4;
+        x1 = w/2 - (h+2*b)/4; //left edge of the table
+        x2 = x1 + b; //left edge of the playing surface
+        x3 = w/2 + (h-2*b)/4; //right edge of the playing surface
         
         ballRadius = (int) (0.45*b);
-        speedLossRate = 0.99;
-        xCueBall = w/2;
+        speedLossRate = 0.98;
+        
+        xCueBall = w/2; //the initial placement of the cueball
         yCueBall = h/3;
-        xRack = w/2;
+        xRack = w/2; //the initial placement of the rack
         yRack = 2*h/3;
-        mode = PLACING_CUEBALL;
+        mode = PLACING_CUEBALL; //we start the game by placing the cueball before the breakshot
+        
+        makeBilliardBalls();
     }
 
     public void makeBilliardBalls() {
 
         balls = new Ball[16];
         
-        //The cue ball
-        balls[0] = new Ball(xCueBall, yCueBall, ballRadius, 1, 30, Color.white, speedLossRate);
+        //Creates the cue ball
+        balls[0] = new Ball( xCueBall, yCueBall, ballRadius, 1, 30, Color.white, speedLossRate);
+        
         initialKineticEnergy = balls[0].getKineticEnergy();
       
-        //The triangular rack of 15
+        //Creates the 15 target balls, setting their initial x,y position so that they form a triangular rack
         double xStart = xRack;
         double y = yRack;
         double deltaY = Math.sqrt(3) * ballRadius;
@@ -87,61 +102,91 @@ public class BilliardsSimulator extends CollisionSimulator {
     
     public void setCueBallSpeed() {
         
-        Vector aimingVector = new Vector( xAim - xCueBall, yAim - yCueBall );
+        if ( mode == this.AIMING_CUEBALL) {
+            
+            Vector aimingVector = new Vector( xAim - balls[0].xPos, yAim - balls[0].yPos );
+            velocityCueBall = aimingVector.scalarMultiply( 0.20 );
+            balls[0].setVelocity( velocityCueBall.xComponent, velocityCueBall.yComponent );
+            
+            lineOfSightVector = aimingVector.scalarMultiply(10);
+            xAimEnd = (int) (balls[0].xPos + lineOfSightVector.xComponent);
+            yAimEnd = (int) (balls[0].yPos + lineOfSightVector.yComponent);
+            
+        }
         
-        //Dragging an aim line of 100 pixels yields a shooting speed of 20 pixels per frame
-        velocityCueBall = aimingVector.scalarMultiply( 0.20 );
+        else
+            System.out.println("ERROR! setCueBallSpeed called in wrong mode!");
     }
     
+    //returns true when all balls have slowed to practically 0 speed, i.e. when
+    //the total kinetic energy of all balls is less than .0001 times the initial KE of the cueball when it was struck
     public boolean allBallStoppedRolling() {
-        if (getTotalKineticEnergy() <= .001 * initialKineticEnergy ) 
+        
+        if ( getTotalKineticEnergy() <= .0001 * initialKineticEnergy ) 
             return true;
+        
         else
             return false;
     }
 
+    //called in every repetition of the animation loop
     public void drawScreen() {
         Image img = createImage();
         Graphics g = p.getGraphics();
         g.drawImage(img, 0, 0, p);
     }
 
+    //Draws the scene for the current frame of the animation
     private Image createImage() {
         BufferedImage bi = new BufferedImage(p.getWidth(), p.getHeight(), BufferedImage.TYPE_INT_RGB);
         Graphics2D G = (Graphics2D) bi.getGraphics();
         
-        //Black background
+        //Draws the black background
         G.setColor(this.backgroundColor);
         G.fillRect(0, 0, p.getWidth(), p.getHeight());       
             
-        //Table border
+        //Draws the table border
         G.setColor( tableBorder );
         G.fillRect(x1, 0, (h+2*b)/2, h);
         
-        //Playing surface
+        //Draws the green playing surface
         G.setColor( tableSurface );
         G.fillRect( x2, b, (h-2*b)/2, h-2*b );
         
-        //Pockets
+        //Draws the pockets
            //upper corner pockets
-        G.setColor(Color.black);     
-        G.fillArc(x1, 0, 2*b,2*b, 0, -90);
-        G.fillArc(x3-b, 0, 2*b,2*b, 180, 90);
+        G.setColor(Color.black);  
+        G.fillArc(x2-pr, b-pr, pd, pd, 0, -90);
+        G.fillArc(x3-pr, b-pr, pd, pd, 180, 90);
            //lower corner pockets
-        G.fillArc(x1, h-2*b, 2*b,2*b, 0, 90);
-        G.fillArc(x3-b, h-2*b, 2*b,2*b, 90, 90);
+        G.fillArc(x2-pr, h-b-pr, pd,pd, 0, 90);
+        G.fillArc(x3-pr, h-b-pr, pd,pd, 90, 90);
           //side pockets
-        G.fillArc(x1, h/2-b, 2*b, 2*b, -90, 180);
-        G.fillArc(x3-b, h/2-b, 2*b, 2*b, 90, 180);
+        G.fillArc(x2-pl, h/2-pr, 2*pl, pd, -90, 180);
+        G.fillArc(x3-pl, h/2-pr, 2*pl, pd, 90, 180);
         
-        //Walls
+        //Draws the walls
         if (walls != null) 
             for (int i = 0; i < walls.size(); i++) 
                 walls.get(i).draw(G); 
-         
+        
+        //Draws the balls
         if (balls != null) 
             for (int i = 0; i < balls.length; i++) 
                 balls[i].draw(G);
+        
+        //Draws the blue aiming line and the red speed line
+        if ( mode == AIMING_CUEBALL && form.mouseDown == true ) {
+            G.setColor(Color.red);
+            BasicStroke s = new BasicStroke(4);
+            G.setStroke(s);
+            G.drawLine((int)balls[0].xPos, (int)balls[0].yPos, xAim, yAim );
+            
+            G.setColor(Color.blue);
+            BasicStroke s2 = new BasicStroke(1);           
+            G.setStroke(s2);
+            G.drawLine((int)balls[0].xPos, (int)balls[0].yPos, xAimEnd, yAimEnd );
+        }
  
         return bi;
     }
@@ -149,14 +194,14 @@ public class BilliardsSimulator extends CollisionSimulator {
     public void setWalls(JPanel p) { 
         walls = new ArrayList();
 
-        walls.add(new Wall(x2+b, b, x3-b, b, 0, tableBorder, 3, "NORTH"));
-        walls.add(new Wall(x2+b, h-b, x3-b, h-b, 0, tableBorder, 3, "SOUTH"));
+        walls.add(new Wall(x2+pr, b, x3-pr, b, 0, tableBorder, 3, "NORTH"));
+        walls.add(new Wall(x2+pr, h-b, x3-pr, h-b, 0, tableBorder, 3, "SOUTH"));
         
-        walls.add(new Wall(x2, 2*b, x2, h/2-b, 0, tableBorder, 3, "NORTHWEST"));
-        walls.add(new Wall(x2, h/2+b, x2, h-2*b, 0, tableBorder, 3, "SOUTHWEST"));
+        walls.add(new Wall(x2, b+pr, x2, h/2-pr, 0, tableBorder, 3, "NORTHWEST"));
+        walls.add(new Wall(x2, h/2+pr, x2, h-b-pr, 0, tableBorder, 3, "SOUTHWEST"));
         
-        walls.add(new Wall(x3, 2*b, x3, h/2-b, 0, tableBorder, 3, "NORTHEAST "));
-        walls.add(new Wall(x3, h/2+b, x3, h-2*b, 0, tableBorder, 3, "SOUTHEAST "));
+        walls.add(new Wall(x3, b+pr, x3, h/2-pr, 0, tableBorder, 3, "NORTHEAST "));
+        walls.add(new Wall(x3, h/2+pr, x3, h-b-pr, 0, tableBorder, 3, "SOUTHEAST "));
     }
 
     public void run() {
@@ -165,8 +210,8 @@ public class BilliardsSimulator extends CollisionSimulator {
            
            if ( allBallStoppedRolling() )  {
                animator = null;
-               form.shootButton.setEnabled(true);
                mode = AIMING_CUEBALL;
+               
            }
                
            for (int i = 0; i < balls.length; i++) { //FOR EACH Ball i...

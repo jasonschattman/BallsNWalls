@@ -10,12 +10,14 @@ public class BallsNWallsForm extends javax.swing.JFrame {
     WallDrawingCollisionSimulator wdcs;
     BilliardsSimulator bs;
     int simulatorMode;  //other choice is "BILLIARDS"
+    boolean mouseDown;
     
     
     public BallsNWallsForm() {
         initComponents(); 
         wdcs = new WallDrawingCollisionSimulator( drawingPanel );
         bs = new BilliardsSimulator( this );
+        mouseDown = false;
     }
     
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -32,9 +34,9 @@ public class BallsNWallsForm extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         numBallsText = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        maxSpeedText = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        radiusText = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        sizeSlider1 = new javax.swing.JSlider();
+        speedSlider1 = new javax.swing.JSlider();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         startEpidemicButton = new javax.swing.JButton();
@@ -51,14 +53,14 @@ public class BallsNWallsForm extends javax.swing.JFrame {
         startTwoSidedChargeButton = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        numBallsTwoSidedText = new javax.swing.JTextField();
-        speedTwoSidedText = new javax.swing.JTextField();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        numBallsText2 = new javax.swing.JTextField();
+        sizeSlider2 = new javax.swing.JSlider();
+        jLabel9 = new javax.swing.JLabel();
+        speedSlider2 = new javax.swing.JSlider();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        drawingPanel.setBackground(new java.awt.Color(255, 204, 204));
+        drawingPanel.setBackground(new java.awt.Color(153, 153, 153));
         drawingPanel.setPreferredSize(new java.awt.Dimension(700, 700));
         drawingPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
@@ -108,47 +110,57 @@ public class BallsNWallsForm extends javax.swing.JFrame {
 
         jLabel2.setText("Max initial speed");
 
-        maxSpeedText.setText("15");
+        jLabel10.setText("Ball size");
 
-        jLabel4.setText("Ball radius");
-
-        radiusText.setText("40");
+        speedSlider1.setMaximum(20);
+        speedSlider1.setMinimum(2);
+        speedSlider1.setValue(10);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(numBallsText, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(radiusText, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(numBallsText, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(startRandomDistributionButton))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(maxSpeedText, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(startRandomDistributionButton))
-                .addContainerGap(52, Short.MAX_VALUE))
+                        .addComponent(speedSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sizeSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(467, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(numBallsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(radiusText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(maxSpeedText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(startRandomDistributionButton))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(numBallsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel10))
+                    .addComponent(sizeSlider1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(startRandomDistributionButton))
+                        .addGap(5, 5, 5))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(speedSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Custom Distribution", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 13), new java.awt.Color(0, 0, 255))); // NOI18N
@@ -205,7 +217,7 @@ public class BallsNWallsForm extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(numHealersText, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(271, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -252,7 +264,7 @@ public class BallsNWallsForm extends javax.swing.JFrame {
                 .addComponent(startBilliardRackButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(shootButton)
-                .addContainerGap(235, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -276,53 +288,55 @@ public class BallsNWallsForm extends javax.swing.JFrame {
 
         jLabel8.setText("Speed");
 
-        numBallsTwoSidedText.setText("200");
+        numBallsText2.setText("100");
 
-        speedTwoSidedText.setText("3");
+        jLabel9.setText("Ball size");
 
-        jRadioButton1.setText("jRadioButton1");
-
-        jRadioButton2.setText("jRadioButton2");
+        speedSlider2.setMaximum(12);
+        speedSlider2.setMinimum(2);
+        speedSlider2.setValue(7);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(startTwoSidedChargeButton)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(numBallsTwoSidedText, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(speedTwoSidedText, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap()
+                        .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRadioButton2)
-                            .addComponent(jRadioButton1))))
-                .addContainerGap(197, Short.MAX_VALUE))
+                        .addComponent(numBallsText2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(startTwoSidedChargeButton))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sizeSlider2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(speedSlider2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(11, Short.MAX_VALUE)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(numBallsTwoSidedText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jRadioButton1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel7)
+                        .addComponent(numBallsText2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel9))
+                    .addComponent(sizeSlider2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(speedTwoSidedText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jRadioButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(startTwoSidedChargeButton))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel8)
+                        .addComponent(startTwoSidedChargeButton))
+                    .addComponent(speedSlider2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(41, 41, 41))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -339,7 +353,7 @@ public class BallsNWallsForm extends javax.swing.JFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -355,7 +369,7 @@ public class BallsNWallsForm extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(drawingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(105, Short.MAX_VALUE))
         );
@@ -370,15 +384,36 @@ public class BallsNWallsForm extends javax.swing.JFrame {
         cs.run();
     }
     
+    public int getRadius(int numBalls, JSlider js) {
+        int w = drawingPanel.getWidth();
+        
+        int minRadius = (int)((0.8 * w)/numBalls);
+        int maxRadius = 3 * w/numBalls;
+        
+        double sliderSetting = js.getValue();
+        
+        int radius = (int) (minRadius + sliderSetting/100 * (maxRadius-minRadius));
+        if (radius > 150)
+            radius = 150;
+        
+        return radius;
+    }
+    
     private void startTwoSidedChargeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startTwoSidedChargeButtonActionPerformed
         
         simulatorMode = WALL_DRAWING_MODE;
         
-        int numBalls = getTextFieldValue( numBallsTwoSidedText );  
-        int speed = getTextFieldValue( speedTwoSidedText );
-        int radius = (int) (1.5* this.drawingPanel.getWidth() / numBalls);
+        int numBalls = getTextFieldValue( numBallsText2 ) * 2; 
         
-        wdcs.makeTwoSidedCharge( numBalls, radius, speed );
+        if (numBalls > 250) {
+            numBalls = 250;
+            setTextFieldValue( numBallsText2, 250);           
+        }
+        
+        int speed = speedSlider2.getValue();
+        int radius = getRadius( numBalls, sizeSlider2 );
+        
+        wdcs.makeTwoSidedCharge( numBalls, radius,  speed );
         
         bs.animator = null;
         animate( wdcs );
@@ -405,18 +440,25 @@ public class BallsNWallsForm extends javax.swing.JFrame {
         bs.animator = null;
         wdcs.animator = null;
         
-        bs.makeBilliardBalls();
+        bs.reset();
         bs.drawScreen();
-        
-        shootButton.setEnabled(true);
     }//GEN-LAST:event_startBilliardRackButtonActionPerformed
 
     private void mouseClickHandler(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseClickHandler
+    
+        mouseDown = true;
+        
         if (simulatorMode == BILLIARDS_MODE) {
             
             if( bs.mode == bs.PLACING_CUEBALL ) {
                 bs.xCueBall = evt.getX();
                 bs.yCueBall = evt.getY(); 
+                bs.drawScreen();
+            }
+            
+            else if( bs.mode == bs.AIMING_CUEBALL ) {
+                bs.xAim = evt.getX();
+                bs.yAim = evt.getY();
                 bs.drawScreen();
             }
         }
@@ -428,22 +470,25 @@ public class BallsNWallsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_mouseClickHandler
 
     private void mouseDraggedHandler(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseDraggedHandler
+        
+        mouseDown = true;
+        
         if (simulatorMode == BILLIARDS_MODE) {
+            
             if( bs.mode == bs.PLACING_CUEBALL ) {
 
                 bs.xCueBall = evt.getX();
                 bs.yCueBall = evt.getY();
-                Ball cueBall = bs.balls[0];
-                cueBall.setPosition(bs.xCueBall, bs.yCueBall);
-                bs.drawScreen();
-     
+                bs.balls[0].setPosition( bs.xCueBall, bs.yCueBall );
+                bs.drawScreen();     
             }
             
-            if( bs.mode == bs.AIMING_CUEBALL ) {
+            else if( bs.mode == bs.AIMING_CUEBALL ) {
                 bs.xAim = evt.getX();
                 bs.yAim = evt.getY();
+                bs.setCueBallSpeed();
                 bs.drawScreen();
-            }
+             }
         }
            
         else if (simulatorMode == WALL_DRAWING_MODE) {
@@ -455,29 +500,54 @@ public class BallsNWallsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_mouseDraggedHandler
 
     private void mouseReleasedHandler(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseReleasedHandler
-        if (simulatorMode == BILLIARDS_MODE) {
+        
+        mouseDown = false;
+        
+        if (simulatorMode == WALL_DRAWING_MODE) {
         
             wdcs.lineBeingDrawn = false;
             wdcs.xWallEnd = evt.getX();
             wdcs.yWallEnd = evt.getY();    
             wdcs.walls.add( new Wall(wdcs.xWallStart, wdcs.yWallStart, wdcs.xWallEnd, wdcs.yWallEnd, 0, Color.white, 3, Integer.toString(wdcs.walls.size())));
          }
+        
+        else if ( simulatorMode == BILLIARDS_MODE ) {
+            
+            if( bs.mode == bs.PLACING_CUEBALL ) {
+                bs.mode = bs.AIMING_CUEBALL;
+            }
+            
+            else if( bs.mode == bs.AIMING_CUEBALL ) {
+                bs.setCueBallSpeed();
+                shootButton.setEnabled(true);
+                bs.mode = bs.ANIMATING;
+            }
+        }
     }//GEN-LAST:event_mouseReleasedHandler
 
     private void mousePressedHandler(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mousePressedHandler
-        if (simulatorMode == BILLIARDS_MODE) {
+        
+        mouseDown = true;
+        
+        if ( simulatorMode == BILLIARDS_MODE ) {
             
             if( bs.mode == bs.PLACING_CUEBALL ) {
                 bs.xCueBall = evt.getX();
                 bs.yCueBall = evt.getY(); 
                 bs.drawScreen();
             }
+            
+            if( bs.mode == bs.AIMING_CUEBALL ) {
+                bs.xAim = evt.getX();
+                bs.yAim = evt.getY();
+                bs.drawScreen();
+            }
         }
         
-        else if (simulatorMode == WALL_DRAWING_MODE) {
+        else if ( simulatorMode == WALL_DRAWING_MODE ) {
             wdcs.xWallStart = evt.getX();
             wdcs.yWallStart = evt.getY();
-        } wdcs.yWallStart = evt.getY();
+        } 
         
     }//GEN-LAST:event_mousePressedHandler
 
@@ -486,8 +556,13 @@ public class BallsNWallsForm extends javax.swing.JFrame {
         simulatorMode = WALL_DRAWING_MODE;
         
         int numBalls = getTextFieldValue( numBallsText );
-        int radius = getTextFieldValue( radiusText );
-        int maxSpeed = getTextFieldValue( maxSpeedText );
+        
+        if (numBalls > 500) {
+            numBalls = 500;
+            setTextFieldValue( numBallsText, 500);
+        }
+        int radius = getRadius( numBalls, sizeSlider1 ) / 2;
+        int maxSpeed = speedSlider1.getValue();
         
         wdcs.makeRandomDistribution( numBalls, radius, maxSpeed );
         
@@ -552,29 +627,29 @@ public class BallsNWallsForm extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup5;
     public javax.swing.JPanel drawingPanel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JTextField maxSpeedText;
     private javax.swing.JTextField numBallsText;
-    private javax.swing.JTextField numBallsTwoSidedText;
+    private javax.swing.JTextField numBallsText2;
     private javax.swing.JTextField numHealersText;
     private javax.swing.JTextField numHealthyText;
     private javax.swing.JTextField numSickText;
-    private javax.swing.JTextField radiusText;
     public javax.swing.JButton shootButton;
-    private javax.swing.JTextField speedTwoSidedText;
+    public javax.swing.JSlider sizeSlider1;
+    private javax.swing.JSlider sizeSlider2;
+    public javax.swing.JSlider speedSlider1;
+    private javax.swing.JSlider speedSlider2;
     private javax.swing.JButton startBilliardRackButton;
     private javax.swing.JButton startEpidemicButton;
     private javax.swing.JButton startRandomDistributionButton;
