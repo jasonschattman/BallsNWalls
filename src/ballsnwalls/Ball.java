@@ -86,54 +86,78 @@ public class Ball {
         else 
             return false;        
     }
+    
+    public void adjustVelocityAfterCollisionWith( Ball theOtherBall ) {
+        
+        //READ IN THE KNOWN VALUES
+        double vx = this.velocity.xComponent;
+        double vy = this.velocity.yComponent;
+        double wx = theOtherBall.velocity.xComponent;
+        double wy = theOtherBall.velocity.yComponent;
+        
+        double ax, ay, bx, by;
+        
+        double deltaX = theOtherBall.xPos - this.xPos;
+        double deltaY = theOtherBall.yPos - this.yPos;
 
-    public void adjustVelocityAfterCollisionWith(Ball theOtherBall) {
-        double deltaX = this.xPos - theOtherBall.xPos;
-        double deltaY = this.yPos - theOtherBall.yPos;
+        //A SHAMELESS HACK
+        if (deltaX == 0) 
+            deltaX = -0.001;       
 
-        if (deltaX == 0) {
-            deltaX = -0.001;
-        }
+        //13 CONSTANTS
+        double m1 = vx + wx;
+        double m2 = vy + wy;
+        double t = deltaY / deltaX;
+        double e = vx*vx + vy*vy + wx*wx + wy*wy;
+        double f = t*wx - wy;
+        double c = t*wx - wy - t*m1 + m2;
+        double d = t*m1 - f;
+        double A = 2 + 2*t*t;
+        double B = 2*c*t - 2*d*t - 2*m1;
+        double C = c*c + m1*m1 + d*d - e;
+        
+        //FINAL SOLUTION FOR ax
+        if ( deltaX >= 0 )
+            ax = (-B - Math.sqrt( B*B-4*A*C )) / (2*A);
+        
+        else
+            ax = (-B + Math.sqrt( B*B-4*A*C )) / (2*A);
+        
+        //SOLUTION FOR ay, bx, by
+        ay = c + t*ax;       
+        bx = m1 - ax;
+        by = m2 - ay;
 
-        double tan = deltaY / deltaX;
-        double tanSq = tan * tan;
-        double secSq = 1 + tanSq;
-
-        double Vax = this.velocity.xComponent;
-        double Vay = this.velocity.yComponent;
-        double Vbx = theOtherBall.velocity.xComponent;
-        double Vby = theOtherBall.velocity.yComponent;
-
-        double Uax = (-Vay * tan + tanSq * Vax + Vbx + tan * Vby) / secSq;
-        double Uay = -(-tan * Vbx - tanSq * Vby + tan * Vax - Vay) / secSq;
-        double Ubx = (Vax + Vbx * tanSq + Vay * tan - tan * Vby) / secSq;
-        double Uby = (Vby + Vay * tanSq - tan * Vbx + tan * Vax) / secSq;
-
+        //SET THE BALLS' VELOCITIES TO THESE NEW VALUES
         if (this.justHitWall == false) {
-            this.setVelocity(Uax, Uay);
+            this.setVelocity(ax, ay);
         }
 
         if (theOtherBall.justHitWall == false) {
-            theOtherBall.setVelocity(Ubx, Uby);
+            theOtherBall.setVelocity(bx, by);
         }
 
-        realignToSurface(theOtherBall, tan, tanSq);
+        //REALIGN THE 2 BALLS TO BE TANGENT TO ONE ANOTHER IF THEY'VE OVERLAPPED DURING THE "COLLISION"
+        realignToSurface( theOtherBall, t, t*t );
     }
 
-    public void realignToSurface(Ball theOtherBall, double tan, double tanSq) {
+    
+    public void realignToSurface( Ball theOtherBall, double tan, double tanSq ) {
         double xAdjust = 2 * this.radius / Math.sqrt(1 + tanSq);
         double newXb, newYb;
 
-        if (this.xPos > theOtherBall.xPos) {
+        if (this.xPos > theOtherBall.xPos) 
             newXb = -xAdjust + this.xPos;
-        } else {
+         
+        else 
             newXb = xAdjust + this.xPos;
-        }
+       
 
         newYb = tan * (newXb - this.xPos) + this.yPos;
         theOtherBall.setPosition(newXb, newYb);
     }
 
+    
     public double getTimeToWallCollision(Wall w) {
         double A = w.A, B = w.B, C = w.C;
         

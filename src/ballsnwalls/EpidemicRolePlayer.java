@@ -15,7 +15,9 @@ public class EpidemicRolePlayer extends Ball {
     }
     
     public void adjustVelocityAfterCollisionWith( Ball theOtherBall ) { 
-        super.adjustVelocityAfterCollisionWith( theOtherBall );    
+        
+        super.adjustVelocityAfterCollisionWith( theOtherBall ); 
+        
         Color me = this.color;
         Color you = theOtherBall.color;
            

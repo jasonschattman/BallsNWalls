@@ -101,7 +101,7 @@ public class BallsNWallsForm extends javax.swing.JFrame {
 
         jLabel1.setText("Num balls");
 
-        numBallsText.setText("7");
+        numBallsText.setText("2");
         numBallsText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 numBallsTextActionPerformed(evt);

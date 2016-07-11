@@ -30,7 +30,8 @@ public class WallDrawingCollisionSimulator extends CollisionSimulator {
      
      double max = Math.min(maxSpeed, 20);
      double r = Math.min(radius, p.getWidth()/(2*numBalls));
-     
+     Color c;
+      
      for (int i = 0; i < balls.length; i++) {
          
          double randX = randDouble(200,600);
@@ -38,7 +39,11 @@ public class WallDrawingCollisionSimulator extends CollisionSimulator {
          double xSpeed = randDouble(-max, max);
          double ySpeed = randDouble(-max, max);
          
-         balls[i] = new Ball(randX, randY, radius, xSpeed, ySpeed, Color.blue, 1);       
+         if (i==0)
+             c = Color.red;
+         else
+             c = Color.blue;
+         balls[i] = new Ball(randX, randY, radius, xSpeed, ySpeed, c, 1);       
      }
  }
  
