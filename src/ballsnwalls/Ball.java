@@ -3,6 +3,8 @@ package ballsnwalls;
 import java.awt.*;
 import java.util.ArrayList;
 
+//Last updated July 11, 2016
+
 public class Ball {
     double xPos, yPos;
     Vector velocity;  //measured in pixels per frame
