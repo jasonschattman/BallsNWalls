@@ -3,7 +3,7 @@ package ballsnwalls;
 import java.awt.*;
 import java.util.ArrayList;
 
-//Last updated July 11, 2016
+//Last updated July 11, 2016 8:08 PM
 
 public class Ball {
     double xPos, yPos;
